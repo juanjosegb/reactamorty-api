@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,17 @@ namespace reactamorty_api.Controllers
             _context = context;
         }
 
-        [HttpGet("{page?}")]
-        public async Task<ActionResult<IEnumerable>> Get(int? page = null)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable>> Get(int page = 0, string name = "", string status = "",
+            string species = "", string type = "", string gender = "")
         {
-            var characters = await _context.Character.ToListAsync();
+            var characters = await _context.Character
+                .Where(character => character.Name.Contains(name) ||
+                                    character.Status.Contains(status) ||
+                                    character.Species.Contains(species) ||
+                                    character.Type.Contains(type) ||
+                                    character.Gender.Contains(gender))
+                .ToListAsync();
             return characters;
         }
     }
