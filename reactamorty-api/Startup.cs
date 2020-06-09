@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using reactamorty_api.Models;
+using reactamorty_api.Services;
 
 namespace reactamorty_api
 {
@@ -25,7 +26,8 @@ namespace reactamorty_api
             services.AddControllers();
             services.AddDbContext<reactamortyContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());  
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<CharacterService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

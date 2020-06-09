@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
-using reactamorty_api.Domains;
+using reactamorty_api.DTOs;
 using reactamorty_api.Models;
 
 namespace reactamorty_api.Mappers
@@ -10,8 +11,9 @@ namespace reactamorty_api.Mappers
     {
         public AutoMapperCharacter()
         {
-            CreateMap<Task<List<Character>>, CharacterInfo>()
-                .ForMember(o => o.Count, b => b.MapFrom(z => z.Result.Count));
+            CreateMap<List<Character>, CharactersDto>()
+                .ForPath(dest => dest.Info.Count, opt => opt.MapFrom(src => src.Count))
+                .ForMember(dest => dest.Characters, opt => opt.MapFrom(src => src.ToList()));
         }
     }
 }
