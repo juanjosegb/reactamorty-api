@@ -38,7 +38,7 @@ namespace reactamorty_api.Controllers
             var paginatedCharacters = characters.GetRange(20 * (characterData.Page - 1),
                 Math.Abs(characters.Count - (20 * (characterData.Page - 1))) >= 20 ? 20 : Math.Abs(characters.Count - (20 * (characterData.Page - 1))));
 
-            var charactersDto = _mapper.Map<List<Character>, CharactersDto>(paginatedCharacters, opt =>
+            var charactersDto = _mapper.Map<List<CharacterResult>, CharactersDto>(paginatedCharacters, opt =>
             {
                 opt.AfterMap((src, dest) =>
                 {

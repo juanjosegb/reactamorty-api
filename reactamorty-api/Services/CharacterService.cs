@@ -15,6 +15,7 @@ namespace reactamorty_api.Services
         private readonly reactamortyContext _context;
         private readonly IMapper _mapper;
         private const string Url = "https://localhost:5001/api/characters?page=";
+        private const string UrlBase = "https://localhost:5001/api/";
 
         public CharacterService(reactamortyContext context, IMapper mapper)
         {
@@ -22,7 +23,7 @@ namespace reactamorty_api.Services
             _mapper = mapper;
         }
 
-        public async Task<List<Character>> GetCharacters(CharacterData characterData)
+        public async Task<List<CharacterResult>> GetCharacters(CharacterData characterData)
         {
             return await _context.Character
                 .Where(character => character.Name.ToUpper().Contains(characterData.Name.ToUpper()) &&
@@ -30,6 +31,20 @@ namespace reactamorty_api.Services
                                     character.Species.ToUpper().Contains(characterData.Species.ToUpper()) &&
                                     character.Type.ToUpper().Contains(characterData.Type.ToUpper()) &&
                                     character.Gender.ToUpper().Contains(characterData.Gender.ToUpper()))
+                .Select(character => new CharacterResult()
+                {
+                    Id = character.Id,
+                    Name = character.Name,
+                    Status = character.Status,
+                    Type = character.Type,
+                    Gender = character.Gender,
+                    Origin = character.Origin,
+                    Location = character.LocationHasCharacter,
+                    Image = character.Image,
+                    Episode = character.CharacterHasEpisode,
+                    Url = UrlBase + "character/" + character.Id,
+                    Created = character.Created
+                })
                 .ToListAsync();
         }
 

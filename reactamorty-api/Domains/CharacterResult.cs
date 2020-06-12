@@ -17,23 +17,6 @@ namespace reactamorty_api.Domains
         public string Image { get; set; }
         public List<string> Episode { get; set; }
         public string Url { get; set; }
-        public DateTime Created { get; set; }
-
-        public CharacterResult(int id, string name, string status, string species, string type, string gender,
-            List<Location> origin, List<Location> location, string image, List<string> episode, string url, DateTime created)
-        {
-            Id = id;
-            Name = name;
-            Status = status;
-            Species = species;
-            Type = type;
-            Gender = gender;
-            Origin = origin;
-            Location = location;
-            Image = image;
-            Episode = episode;
-            Url = url;
-            Created = created;
-        }
+        public DateTime? Created { get; set; }
     }
 }

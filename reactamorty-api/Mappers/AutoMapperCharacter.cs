@@ -12,7 +12,7 @@ namespace reactamorty_api.Mappers
     {
         public AutoMapperCharacter()
         {
-            CreateMap<List<Character>, CharactersDto>()
+            CreateMap<List<CharacterResult>, CharactersDto>()
                 .ForPath(dest => dest.Info.Count, opt => opt.MapFrom(src => src.Count))
                 .ForMember(dest => dest.Results, opt => opt.MapFrom(src => src.ToList()));
         }
