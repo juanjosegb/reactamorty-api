@@ -20,7 +20,9 @@ namespace reactamorty_api.Models
         public string Image { get; set; }
         public DateTime? Created { get; set; }
         public int? Origin { get; set; }
+        public int? Location { get; set; }
 
+        public virtual Location LocationNavigation { get; set; }
         public virtual Location OriginNavigation { get; set; }
         public virtual ICollection<CharacterHasEpisode> CharacterHasEpisode { get; set; }
         public virtual ICollection<LocationHasCharacter> LocationHasCharacter { get; set; }

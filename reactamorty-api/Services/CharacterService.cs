@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -38,10 +37,9 @@ namespace reactamorty_api.Services
                     Status = character.Status,
                     Type = character.Type,
                     Gender = character.Gender,
-                    Origin = character.Origin,
-                    Location = character.LocationHasCharacter,
+                    Origin = new OriginResult(character.OriginNavigation.Name, UrlBase + "location/" + character.OriginNavigation.Id),
+                    Location = new LocationResult(character.LocationNavigation.Name, UrlBase + "location/" + character.LocationNavigation.Id),
                     Image = character.Image,
-                    Episode = character.CharacterHasEpisode,
                     Url = UrlBase + "character/" + character.Id,
                     Created = character.Created
                 })

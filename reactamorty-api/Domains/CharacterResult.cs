@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using reactamorty_api.Models;
 
 namespace reactamorty_api.Domains
 {
@@ -12,8 +11,8 @@ namespace reactamorty_api.Domains
         public string Species { get; set; }
         public string Type { get; set; }
         public string Gender { get; set; }
-        public List<Location> Origin { get; set; }
-        public List<Location> Location { get; set; }
+        public OriginResult Origin { get; set; }
+        public LocationResult Location { get; set; }
         public string Image { get; set; }
         public List<string> Episode { get; set; }
         public string Url { get; set; }

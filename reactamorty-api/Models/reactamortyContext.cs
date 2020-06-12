@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace reactamorty_api.Models
 {
@@ -21,14 +20,13 @@ namespace reactamorty_api.Models
         public virtual DbSet<Episode> Episode { get; set; }
         public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<LocationHasCharacter> LocationHasCharacter { get; set; }
-        
-        public IConfiguration Configuration { get; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(Configuration.GetConnectionString("DefaultConnection"), x => x.ServerVersion("8.0.20-mysql"));
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseMySql("server=localhost;port=3306;database=reactamorty;user=root;password=danone20", x => x.ServerVersion("8.0.20-mysql"));
             }
         }
 
@@ -37,6 +35,9 @@ namespace reactamorty_api.Models
             modelBuilder.Entity<Character>(entity =>
             {
                 entity.ToTable("character");
+
+                entity.HasIndex(e => e.Location)
+                    .HasName("fk_location_idx");
 
                 entity.HasIndex(e => e.Origin)
                     .HasName("fk_origin_idx");
@@ -58,6 +59,8 @@ namespace reactamorty_api.Models
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Location).HasColumnName("location");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -85,8 +88,13 @@ namespace reactamorty_api.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.HasOne(d => d.LocationNavigation)
+                    .WithMany(p => p.CharacterLocationNavigation)
+                    .HasForeignKey(d => d.Location)
+                    .HasConstraintName("fk_location");
+
                 entity.HasOne(d => d.OriginNavigation)
-                    .WithMany(p => p.Character)
+                    .WithMany(p => p.CharacterOriginNavigation)
                     .HasForeignKey(d => d.Origin)
                     .HasConstraintName("fk_origin");
             });
