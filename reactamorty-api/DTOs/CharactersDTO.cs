@@ -7,6 +7,6 @@ namespace reactamorty_api.DTOs
     public class CharactersDto
     {
         public CharacterInfo Info { get; set; }
-        public List<Character> Characters { get; set; }
+        public List<Character> Results { get; set; }
     }
 }

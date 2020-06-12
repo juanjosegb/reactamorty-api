@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ namespace reactamorty_api.Services
     {
         private readonly reactamortyContext _context;
         private readonly IMapper _mapper;
+        private const string Url = "https://localhost:5001/api/characters?page=";
 
         public CharacterService(reactamortyContext context, IMapper mapper)
         {
@@ -28,6 +31,16 @@ namespace reactamorty_api.Services
                                     character.Type.ToUpper().Contains(characterData.Type.ToUpper()) &&
                                     character.Gender.ToUpper().Contains(characterData.Gender.ToUpper()))
                 .ToListAsync();
+        }
+
+        public string FormatCharacterUrl(CharacterData characterData, int operationMember)
+        {
+            return $"{Url}{Math.Max(0, characterData.Page - operationMember)}" +
+                   $"{(characterData.Name == string.Empty ? string.Empty : "&name=" + characterData.Name)}" +
+                   $"{(characterData.Status == string.Empty ? string.Empty : "&status=" + characterData.Status)}" +
+                   $"{(characterData.Species == string.Empty ? string.Empty : "&species=" + characterData.Species)}" +
+                   $"{(characterData.Type == string.Empty ? string.Empty : "&type=" + characterData.Type)}" +
+                   $"{(characterData.Gender == string.Empty ? string.Empty : "&gender=" + characterData.Gender)}";
         }
     }
 }

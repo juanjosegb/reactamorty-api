@@ -7,8 +7,7 @@ namespace reactamorty_api.Models
     {
         public Location()
         {
-            CharacterLocationNavigation = new HashSet<Character>();
-            CharacterOriginNavigation = new HashSet<Character>();
+            Character = new HashSet<Character>();
             LocationHasCharacter = new HashSet<LocationHasCharacter>();
         }
 
@@ -19,8 +18,7 @@ namespace reactamorty_api.Models
         public string Url { get; set; }
         public DateTime? Created { get; set; }
 
-        public virtual ICollection<Character> CharacterLocationNavigation { get; set; }
-        public virtual ICollection<Character> CharacterOriginNavigation { get; set; }
+        public virtual ICollection<Character> Character { get; set; }
         public virtual ICollection<LocationHasCharacter> LocationHasCharacter { get; set; }
     }
 }
