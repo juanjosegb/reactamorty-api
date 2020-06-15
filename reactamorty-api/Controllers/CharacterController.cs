@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -50,9 +51,10 @@ namespace reactamorty_api.Controllers
         }
         
         [HttpGet("{ids}")]
-        public async Task<List<CharacterResult>> Get([FromRoute(Name = "ids")]List<int> ids)
+        public async Task<List<CharacterResult>> Get([FromRoute(Name = "ids")]string ids)
         {
-            return await _characterService.GetCharacters(ids);
+            var separatedIds = ids.Split(',').Select(int.Parse).ToList();
+            return await _characterService.GetCharacters(separatedIds);
         }
     }
 }
