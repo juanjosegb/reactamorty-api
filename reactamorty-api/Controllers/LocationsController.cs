@@ -11,12 +11,10 @@ namespace reactamorty_api.Controllers
     [Route("api/[controller]")]
     public class LocationsController : ControllerBase
     {
-        private readonly ILogger<CharactersController> _logger;
         private readonly reactamortyContext _context;
 
-        public LocationsController(ILogger<CharactersController> logger, reactamortyContext context)
+        public LocationsController(reactamortyContext context)
         {
-            _logger = logger;
             _context = context;
         }
 

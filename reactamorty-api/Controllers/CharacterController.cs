@@ -12,23 +12,23 @@ namespace reactamorty_api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CharactersController : ControllerBase
+    public class CharacterController : ControllerBase
     {
         private readonly CharacterService _characterService;
         private readonly IMapper _mapper;
 
-        public CharactersController(CharacterService characterService, IMapper mapper)
+        public CharacterController(CharacterService characterService, IMapper mapper)
         {
             _characterService = characterService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<CharactersDto>> Get(int page = 1, string name = "", string status = "",
+        public async Task<ActionResult<CharactersDto>> Filter(int page = 1, string name = "", string status = "",
             string species = "", string type = "", string gender = "")
         {
             var characterData = new CharacterData(page == 0 ? 1 : page, name ?? "", status ?? "", species ?? "", type ?? "", gender ?? "");
-            var characters = await _characterService.GetCharacters(characterData);
+            var characters = await _characterService.FilterCharacters(characterData);
 
             if (page > Math.Ceiling((double) characters.Count / 20))
             {
@@ -47,6 +47,12 @@ namespace reactamorty_api.Controllers
                 });
             });
             return charactersDto;
+        }
+        
+        [HttpGet("{ids}")]
+        public async Task<List<CharacterResult>> Get([FromRoute(Name = "ids")]List<int> ids)
+        {
+            return await _characterService.GetCharacters(ids);
         }
     }
 }

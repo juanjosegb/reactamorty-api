@@ -22,7 +22,7 @@ namespace reactamorty_api.Services
             _mapper = mapper;
         }
 
-        public async Task<List<CharacterResult>> GetCharacters(CharacterData characterData)
+        public async Task<List<CharacterResult>> FilterCharacters(CharacterData characterData)
         {
             return await _context.Character
                 .Where(character => character.Name.ToUpper().Contains(characterData.Name.ToUpper()) &&
@@ -30,6 +30,28 @@ namespace reactamorty_api.Services
                                     character.Species.ToUpper().Contains(characterData.Species.ToUpper()) &&
                                     character.Type.ToUpper().Contains(characterData.Type.ToUpper()) &&
                                     character.Gender.ToUpper().Contains(characterData.Gender.ToUpper()))
+                .Include(character => character.CharacterHasEpisode)
+                .Select(character => new CharacterResult()
+                {
+                    Id = character.Id,
+                    Name = character.Name,
+                    Status = character.Status,
+                    Type = character.Type,
+                    Gender = character.Gender,
+                    Origin = new OriginResult(character.OriginNavigation.Name, UrlBase + "location/" + character.OriginNavigation.Id),
+                    Location = new LocationResult(character.LocationNavigation.Name, UrlBase + "location/" + character.LocationNavigation.Id),
+                    Image = character.Image,
+                    Episode = character.CharacterHasEpisode.Select(episode => UrlBase + "episode/" + episode.EpisodeId),
+                    Url = UrlBase + "character/" + character.Id,
+                    Created = character.Created
+                })
+                .ToListAsync();
+        }
+        
+        public async Task<List<CharacterResult>> GetCharacters(List<int> ids)
+        {
+            return await _context.Character
+                .Where(character => ids.Contains(character.Id))
                 .Include(character => character.CharacterHasEpisode)
                 .Select(character => new CharacterResult()
                 {

@@ -11,12 +11,10 @@ namespace reactamorty_api.Controllers
     [Route("api/[controller]")]
     public class EpisodesController : ControllerBase
     {
-        private readonly ILogger<CharactersController> _logger;
         private readonly reactamortyContext _context;
 
-        public EpisodesController(ILogger<CharactersController> logger, reactamortyContext context)
+        public EpisodesController(reactamortyContext context)
         {
-            _logger = logger;
             _context = context;
         }
 
