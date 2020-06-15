@@ -8,7 +8,6 @@ namespace reactamorty_api.Models
         public Character()
         {
             CharacterHasEpisode = new HashSet<CharacterHasEpisode>();
-            LocationHasCharacter = new HashSet<LocationHasCharacter>();
         }
 
         public int Id { get; set; }
@@ -25,6 +24,5 @@ namespace reactamorty_api.Models
         public virtual Location LocationNavigation { get; set; }
         public virtual Location OriginNavigation { get; set; }
         public virtual ICollection<CharacterHasEpisode> CharacterHasEpisode { get; set; }
-        public virtual ICollection<LocationHasCharacter> LocationHasCharacter { get; set; }
     }
 }

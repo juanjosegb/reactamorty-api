@@ -13,8 +13,8 @@ namespace reactamorty_api.Services
     {
         private readonly reactamortyContext _context;
         private readonly IMapper _mapper;
-        private const string Url = "https://localhost:5001/api/characters?page=";
         private const string UrlBase = "https://localhost:5001/api/";
+        private const string Url = UrlBase + "characters?page=";
 
         public CharacterService(reactamortyContext context, IMapper mapper)
         {

@@ -17,9 +17,9 @@ namespace reactamorty_api.Models
 
         public virtual DbSet<Character> Character { get; set; }
         public virtual DbSet<CharacterHasEpisode> CharacterHasEpisode { get; set; }
+        public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
         public virtual DbSet<Episode> Episode { get; set; }
         public virtual DbSet<Location> Location { get; set; }
-        public virtual DbSet<LocationHasCharacter> LocationHasCharacter { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -129,6 +129,25 @@ namespace reactamorty_api.Models
                     .HasConstraintName("fk_character_has_episode_episode1");
             });
 
+            modelBuilder.Entity<Efmigrationshistory>(entity =>
+            {
+                entity.HasKey(e => e.MigrationId)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("__efmigrationshistory");
+
+                entity.Property(e => e.MigrationId)
+                    .HasColumnType("varchar(95)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.ProductVersion)
+                    .IsRequired()
+                    .HasColumnType("varchar(32)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+            });
+
             modelBuilder.Entity<Episode>(entity =>
             {
                 entity.ToTable("episode");
@@ -197,36 +216,6 @@ namespace reactamorty_api.Models
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
-            });
-
-            modelBuilder.Entity<LocationHasCharacter>(entity =>
-            {
-                entity.HasKey(e => new { e.LocationId, e.CharacterId })
-                    .HasName("PRIMARY");
-
-                entity.ToTable("location_has_character");
-
-                entity.HasIndex(e => e.CharacterId)
-                    .HasName("fk_location_has_character_character1_idx");
-
-                entity.HasIndex(e => e.LocationId)
-                    .HasName("fk_location_has_character_location1_idx");
-
-                entity.Property(e => e.LocationId).HasColumnName("location_id");
-
-                entity.Property(e => e.CharacterId).HasColumnName("character_id");
-
-                entity.HasOne(d => d.Character)
-                    .WithMany(p => p.LocationHasCharacter)
-                    .HasForeignKey(d => d.CharacterId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_location_has_character_character1");
-
-                entity.HasOne(d => d.Location)
-                    .WithMany(p => p.LocationHasCharacter)
-                    .HasForeignKey(d => d.LocationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_location_has_character_location1");
             });
 
             OnModelCreatingPartial(modelBuilder);
