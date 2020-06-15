@@ -57,5 +57,12 @@ namespace reactamorty_api.Services
                    $"{(characterData.Type == string.Empty ? string.Empty : "&type=" + characterData.Type)}" +
                    $"{(characterData.Gender == string.Empty ? string.Empty : "&gender=" + characterData.Gender)}";
         }
+
+        public List<CharacterResult> PaginateCharacters(List<CharacterResult> characters,CharacterData characterData)
+        {
+            return characters.GetRange(20 * (characterData.Page - 1), 
+                Math.Abs(characters.Count - (20 * (characterData.Page - 1))) >= 20 ? 20 : 
+                    Math.Abs(characters.Count - (20 * (characterData.Page - 1))));
+        }
     }
 }

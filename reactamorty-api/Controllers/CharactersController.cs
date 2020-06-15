@@ -35,8 +35,7 @@ namespace reactamorty_api.Controllers
                 return BadRequest(new {error = "There is nothing there"});
             }
 
-            var paginatedCharacters = characters.GetRange(20 * (characterData.Page - 1),
-                Math.Abs(characters.Count - (20 * (characterData.Page - 1))) >= 20 ? 20 : Math.Abs(characters.Count - (20 * (characterData.Page - 1))));
+            var paginatedCharacters = _characterService.PaginateCharacters(characters, characterData);
 
             var charactersDto = _mapper.Map<List<CharacterResult>, CharactersDto>(paginatedCharacters, opt =>
             {
