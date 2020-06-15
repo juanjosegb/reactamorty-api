@@ -30,6 +30,7 @@ namespace reactamorty_api.Services
                                     character.Species.ToUpper().Contains(characterData.Species.ToUpper()) &&
                                     character.Type.ToUpper().Contains(characterData.Type.ToUpper()) &&
                                     character.Gender.ToUpper().Contains(characterData.Gender.ToUpper()))
+                .Include(character => character.CharacterHasEpisode)
                 .Select(character => new CharacterResult()
                 {
                     Id = character.Id,
@@ -40,6 +41,7 @@ namespace reactamorty_api.Services
                     Origin = new OriginResult(character.OriginNavigation.Name, UrlBase + "location/" + character.OriginNavigation.Id),
                     Location = new LocationResult(character.LocationNavigation.Name, UrlBase + "location/" + character.LocationNavigation.Id),
                     Image = character.Image,
+                    Episode = character.CharacterHasEpisode.Select(episode => UrlBase + "episode/" + episode.EpisodeId),
                     Url = UrlBase + "character/" + character.Id,
                     Created = character.Created
                 })
