@@ -12,14 +12,12 @@ namespace reactamorty_api.Services
     public class CharacterService
     {
         private readonly reactamortyContext _context;
-        private readonly IMapper _mapper;
         private const string UrlBase = "https://localhost:5001/api/";
         private const string Url = UrlBase + "characters?page=";
 
-        public CharacterService(reactamortyContext context, IMapper mapper)
+        public CharacterService(reactamortyContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<List<CharacterResult>> FilterCharacters(CharacterData characterData)

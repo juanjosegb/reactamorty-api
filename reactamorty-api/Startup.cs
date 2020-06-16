@@ -28,6 +28,7 @@ namespace reactamorty_api
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<CharacterService>();
+            services.AddMvcCore(options => options.EnableEndpointRouting = false).AddRazorViewEngine();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace reactamorty_api.Models
 {
@@ -18,6 +19,7 @@ namespace reactamorty_api.Models
         public virtual DbSet<Character> Character { get; set; }
         public virtual DbSet<CharacterHasEpisode> CharacterHasEpisode { get; set; }
         public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
+        public IConfiguration Configuration { get; }
         public virtual DbSet<Episode> Episode { get; set; }
         public virtual DbSet<Location> Location { get; set; }
 
@@ -25,8 +27,7 @@ namespace reactamorty_api.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=localhost;port=3306;database=reactamorty;user=root;password=danone20", x => x.ServerVersion("8.0.20-mysql"));
+                optionsBuilder.UseMySql(Configuration.GetConnectionString("DefaultConnection"), x => x.ServerVersion("8.0.20-mysql"));
             }
         }
 
